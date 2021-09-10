@@ -13,6 +13,8 @@ byte addr[128];
 Sensors::LDC1614 plate1(0x2A);
 Sensors::LDC1614 plate2(0x2B);
 
+int i = 0;
+
 void addressEnabled(int& nDevices, byte* addr) {
     Serial.println("Scanning...");
 
@@ -68,15 +70,21 @@ void loop() {
 
     plate1.readData();
     ch0 = plate1.returnChannelData()[0];
+    // Write the sinewave points, followed by the terminator "Carriage Return" and "Linefeed".
+    //Serial.print(sin(i * 50.0 / 360.0));
+
+    //i += 1;
     for (int i = 0; i < 4; i++)
     {
-        Serial.print(plate1.returnChannelData()[i].number); Serial.print('|');
+        Serial.print(plate1.returnChannelData()[i].number);
+        Serial.write(13);
+        Serial.write(10);
     }
 
     //double invL, f;
     //f = 1 * 40 * pow(10,6) * (ch0.number & (0x0fffffff)) / pow(2,28);
     //invL = (4*PI * PI * 140 * pow(10, -12) * f * f);
     //Serial.print(f); Serial.print('|'); Serial.print(invL);
-    Serial.println('|');
-    delay(200);
+    //Serial.println('|');
+    // delay(200);
 }
