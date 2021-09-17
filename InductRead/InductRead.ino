@@ -6,6 +6,7 @@
 
 #include "include/LDC1614.h"
 
+#define COMBINE(a,b) a##b
 
 int nDevices = 0;
 byte addr[128];
@@ -70,21 +71,29 @@ void loop() {
 
     plate1.readData();
     ch0 = plate1.returnChannelData()[0];
-    // Write the sinewave points, followed by the terminator "Carriage Return" and "Linefeed".
-    //Serial.print(sin(i * 50.0 / 360.0));
+    ch1 = plate1.returnChannelData()[1];
+    ch2 = plate1.returnChannelData()[2];
 
-    //i += 1;
-    for (int i = 0; i < 4; i++)
-    {
-        Serial.print(plate1.returnChannelData()[i].number);
-        Serial.write(13);
-        Serial.write(10);
-    }
+    double invL, f, L;
+    f = 1 * 40 * pow(10, 6) * (ch0.number & (0x0fffffff)) / pow(2, 28);
+    invL = (4 * PI * PI * 140 * pow(10, -12) * f * f);
+    L = 1000000.0 / invL;
+    Serial.print(L);
+    Serial.write(13);
+    Serial.write(10);
 
-    //double invL, f;
-    //f = 1 * 40 * pow(10,6) * (ch0.number & (0x0fffffff)) / pow(2,28);
-    //invL = (4*PI * PI * 140 * pow(10, -12) * f * f);
-    //Serial.print(f); Serial.print('|'); Serial.print(invL);
-    //Serial.println('|');
-    // delay(200);
+    f = 1 * 40 * pow(10, 6) * (ch1.number & (0x0fffffff)) / pow(2, 28);
+    invL = (4 * PI * PI * 140 * pow(10, -12) * f * f);
+    L = 1000000.0 / invL;
+    Serial.print(L);
+    Serial.write(13);
+    Serial.write(10);
+
+    f = 1 * 40 * pow(10, 6) * (ch2.number & (0x0fffffff)) / pow(2, 28);
+    invL = (4 * PI * PI * 140 * pow(10, -12) * f * f);
+    L = 1000000.0 / invL;
+    Serial.print(L);
+    Serial.write(13);
+    Serial.write(10);
+
 }
