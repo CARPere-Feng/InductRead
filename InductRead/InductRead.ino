@@ -96,4 +96,5 @@ void loop() {
     Serial.write(13);
     Serial.write(10);
 
+    delay(500);
 }
